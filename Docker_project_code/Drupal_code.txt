@@ -1,0 +1,34 @@
+Docker compose:
+
+docker-compose.yml
+
+version: "3"
+services:
+	dbos:
+		image: mysql:5.7
+		volumes:
+			- mysql_storage:/var/lib/mysql
+		environment:
+			MYSQL_ROOT_PASSWORD: rootpass
+			MYSQL_DATABASE: mydb
+			MYSQL_USER: falguni
+			MYSQL_PASSWORD: redhat
+		restart: always
+		
+	postos:
+		image: drupal:8.8.5-apache
+		volumes:
+			- postos_storage:/var/lib/mysql
+		environment:
+			POSTGRES_DB:  mydb
+    			POSTGRES_USER: falguni
+    			POSTGRES_PASSWORD: redhat
+		restart: always
+		depends_on:
+			- dbos
+		ports:
+			- 8081:80	
+
+volumes:
+	mysql_storage:
+	postos_storage:	
